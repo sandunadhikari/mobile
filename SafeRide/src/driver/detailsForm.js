@@ -13,22 +13,24 @@ let addItem = item => {
 };
 
 export default  class detailsForm extends  Component<>{
+    constructor(props){
+        super(props)
+        this.state = {
+            from:{
+                nic:'',
+                f_name:'',
+                l_name:'',
+                address_1:'',
+                mobile_1:'',
+                mobile_2:'',
+                email:''
+            }
+        };
+
+    }
 
 
-    state = {
-        from:{
-            nic:'',
-            f_name:'',
-            l_name:'',
-            address_1:'',
-            address_2:'',
-            city:'',
-            mobile_1:'',
-            mobile_2:'',
-            emgerncy_no:'',
-            email:''
-        }
-    };
+
 
 
     handleSubmit = () => {
@@ -122,22 +124,10 @@ export default  class detailsForm extends  Component<>{
 
                     </Grid>
 
-
-
                     <Item style={styles.TextIN} regular>
                         <Input placeholder='Address Line 1'
                                onChangeText={value=>this.updateInput("address_1",value)}
                         />
-                    </Item>
-
-                    <Item style={styles.TextIN} regular>
-                        <Input placeholder='Address Line 2'
-                               onChangeText={value=>this.updateInput("address_2",value)}/>
-                    </Item>
-
-                    <Item style={styles.TextIN} regular>
-                        <Input placeholder='Address City'
-                               onChangeText={value=>this.updateInput("city",value)}/>
                     </Item>
 
                     <Grid>
@@ -167,14 +157,6 @@ export default  class detailsForm extends  Component<>{
 
                     </Grid>
 
-
-
-
-                    <Item style={styles.TextIN} regular>
-
-                        <Input placeholder='Emgerncy Contact Number'
-                               onChangeText={value=>this.updateInput("emgerncy_no",value)}/>
-                    </Item>
 
                     <Item style={styles.TextIN} regular>
                         <Input placeholder='Email'

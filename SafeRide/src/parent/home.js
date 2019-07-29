@@ -24,13 +24,16 @@ import {
     CardItem,
     Item, Input, List
 } from "native-base";
-
+//import io from "socket.io-client";
 MapboxGL.setAccessToken('pk.eyJ1Ijoia2FzdW5kaWFzIiwiYSI6ImNqdGpuM284bjAwbG40YXIwaTU3dWlsNHEifQ.mdmo2TRq6SbnlTIV9gBbwg');
+import io from "socket.io-client";
+import { YellowBox } from 'react-native';
 
 export default class home extends Component {
     constructor() {
         super();
         this.state = {
+            userID:[],
             route:
                 {
                     "type": "FeatureCollection",
@@ -43,77 +46,49 @@ export default class home extends Component {
                             },
                             "geometry": {
                                 "type": "Point",
-                                "coordinates": [
-                                    79.8542782,
-                                    6.9065841
-                                ]
+                                "coordinates": []
                             }
                         },
-                        /*{
-                            "type": "Feature",
-                            "properties": {
-                                "message": "Bar",
-                                "iconSize": [50, 50]
-                            },
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [
-                                    79.85936441904335,
-                                    6.901938916302072
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Feature",
-                            "properties": {
-                                "message": "Baz",
-                                "iconSize": [40, 40]
-                            },
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [
-                                    79.85458440586649,
-                                    6.906705236993872
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Feature",
-                            "properties": {
-                                "message": "Baz",
-                                "iconSize": [40, 40]
-                            },
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [
-                                    79.86452583449125,
-                                    6.917351013519919
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Feature",
-                            "properties": {
-                                "message": "Baz",
-                                "iconSize": [40, 40]
-                            },
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [
-                                    79.84968536743713,
-                                    6.934133591387848
-                                ]
-                            }
-                        }*/
                     ]
                 },
         }
+
+        this.onReceivedMessage = this.onReceivedMessage.bind(this);
+        this.socket = io("http://192.168.1.36:4000");
+        this.socket.on('dataFromServer', this.onReceivedMessage);
+
+        console.ignoredYellowBox = ['Remote debugger'];
+
+        YellowBox.ignoreWarnings([
+            'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
+        ]);
+
+    }
+
+    // componentDidMount() {
+    //     this.socket = io("http://192.168.1.192:3000");
+    //     this.socket.emit("chat message","this.state.chatMessage");
+    //     /*this.socket.on("chat message", msg => {
+    //         this.setState({
+    //             chatMessages: [...this.state.chatMessages, msg]
+    //         });
+    //
+    //     });*/
+    // }
+//
+    onReceivedMessage=(data)=> {
+
+        let route=this.state.route;
+        route.features[0].geometry.coordinates=data;
+        this.setState({
+            route
+        })
     }
 
     render() {
         return (
             <Container>
-                <Header style={{backgroundColor: '#FEC301'}}>
+                <Header>
                     <Left>
                         <Button
                             transparent
@@ -130,6 +105,8 @@ export default class home extends Component {
                     <MapboxGL.MapView
                         styleURL={MapboxGL.StyleURL.Light}
                         zoomLevel={15}
+                        maxZoomLevel={15}
+                        minZoomLevel={12}
                         centerCoordinate={[79.85448710855553, 6.906677343955266]}
                         style={styles.container}>
                         <MapboxGL.ShapeSource id='line2' shape={this.state.route}>

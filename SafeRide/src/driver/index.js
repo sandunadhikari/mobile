@@ -15,7 +15,8 @@ import {Button} from "native-base";
 //import FB from '../config'
 import LoginScreen from "../LoginScreen";
 import Profile from "./profile";
-import Details from "./detailsForm";
+//import Details from "./detailsForm";
+import ChildDetails from "./childData";
 
 
 const CustomDrawerComponent = (props) => (
@@ -69,11 +70,11 @@ const getDrawerIcon = (iconName, tintColor) => <Icons name={iconName} size={20} 
 
 const homeDrawerIcon = ({tintColor}) => getDrawerIcon('home', tintColor);
 const profileDrawerIcon = ({tintColor}) => getDrawerIcon('user', tintColor);
-const detailsDrawerIcon = ({tintColor}) => getDrawerIcon('user', tintColor);
+//const detailsDrawerIcon = ({tintColor}) => getDrawerIcon('user', tintColor);
 
 const homeNavOptions = getDrawerNavigationOptions('Home', homeDrawerIcon);
 const profileNavOptions = getDrawerNavigationOptions('Profile', profileDrawerIcon);
-const detailsNavOptions = getDrawerNavigationOptions('Details', detailsDrawerIcon);
+//const detailsNavOptions = getDrawerNavigationOptions('Details', detailsDrawerIcon);
 
 const AppDrawerNavigator = createDrawerNavigator({
 
@@ -85,10 +86,10 @@ const AppDrawerNavigator = createDrawerNavigator({
         screen: Profile,
         navigationOptions: profileNavOptions
     },
-    Details:{
-        screen: Details,
-        navigationOptions: detailsNavOptions
-    }
+    // Details:{
+    //     screen: Details,
+    //     navigationOptions: detailsNavOptions
+    // }
 
 
 }, {
@@ -103,6 +104,9 @@ const AppStackNavigator = createStackNavigator({
     },
     Login: {
         screen: LoginScreen,
+    },
+    ChildDetails:{
+        screen:ChildDetails,
     }
 
 
@@ -123,7 +127,11 @@ export default class App extends Component<> {
     async logoutCurrentUser() {
         {
             await AsyncStorage.removeItem('token');
-            await AsyncStorage.removeItem('role');
+            //await AsyncStorage.removeItem('role');
+            AsyncStorage.multiGet(["userID", "role"]).then(response => {
+
+            })
+
             this.props.navigation.navigate('Login');
         }
 

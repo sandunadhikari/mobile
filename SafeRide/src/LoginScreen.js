@@ -56,23 +56,31 @@ class LoginScreen extends Component {
             }
         }
         //check already login user
-        this.validAuthen()
+        //this.validAuthen()
 
     }
 
-    async validAuthen() {
+    async componentWillMount(){
         const storedToken = await AsyncStorage.getItem("token");
 
         if (storedToken != null) {
-            const storedRole = await AsyncStorage.getItem("role");
-            console.log(storedRole);
-            if (storedRole == "admin") {
-                this.goAdminScreen();
-            } else if (storedRole == "parent") {
-                this.goParentScreen();
-            } else if (storedRole == "driver") {
-                this.goDriverScreen();
-            }
+
+            AsyncStorage.multiGet(["userID", "role"]).then(response => {
+                // console.log(response[0][0]) // Key1
+                // console.log(response[0][1]) // Value1
+                // console.log(response[1][0]) // Key2
+                // console.log(response[1][1]) // Value2
+
+                if (response[1][1] == "admin") {
+                    this.goAdminScreen();
+                } else if (response[1][1] == "parent") {
+                    this.goParentScreen();
+                } else if (response[1][1] == "driver") {
+                    this.goDriverScreen();
+                }
+            })
+
+
 
         }
 
@@ -256,22 +264,30 @@ class LoginScreen extends Component {
     }
     SignIN = (data) => {
         let scope = this;
+
         try {
             db.auth().signInWithEmailAndPassword(data.username, data.password)
                 .then(async firebaseUser => {
                     await AsyncStorage.setItem("token", firebaseUser.user.refreshToken);
                     let userRolePath = "user/" + firebaseUser.user.uid + "/userRole";
                     db.database().ref(userRolePath).on('value', async (snapshot) => {
-                        await AsyncStorage.setItem('role', snapshot.val().role);
-                        if (firebaseUser.user.refreshToken != null) {
-                            if (snapshot.val().role == "admin") {
-                                scope.goAdminScreen();
-                            } else if (snapshot.val().role == "parent") {
-                                scope.goParentScreen();
-                            } else if (snapshot.val().role == "driver") {
-                                scope.goDriverScreen();
+                        console.log('1');
+
+                        AsyncStorage.multiSet([['userID', firebaseUser.user.uid], ['role', snapshot.val().role]], () => {
+
+                            //await AsyncStorage.setItem('role', snapshot.val().role);
+                            console.log('2');
+                            if (firebaseUser.user.refreshToken != null) {
+                                if (snapshot.val().role == "admin") {
+                                    scope.goAdminScreen();
+                                } else if (snapshot.val().role == "parent") {
+                                    scope.goParentScreen();
+                                } else if (snapshot.val().role == "driver") {
+                                    scope.goDriverScreen();
+                                }
                             }
-                        }
+
+                        })
 
 
                     })

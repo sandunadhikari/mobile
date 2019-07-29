@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View,Image,TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage} from 'react-native';
 import { Container, Header, Content, List, ListItem, Thumbnail, Left, Body, Right, Button,Item ,Icon,Input,H1,Title} from 'native-base';
 import userlo from '../imgs/school.png';
+import db from '../db';
+
 
 
 export default class profile extends Component<> {
@@ -10,15 +12,40 @@ export default class profile extends Component<> {
         super(props);
         //this.params = this.props.navigation.state.params;
         this.state={
-            f_name:'sandun',
-            l_name:'adhikari',
-            email:'abc@gmail.com',
-            city:'kandy',
+            f_name:'',
+            l_name:'',
+            u_name:'',
+            email:'',
+            city:'',
+            address:'',
+            mobile:''
 
         }
 
     }
 
+    componentDidMount(): void {
+        AsyncStorage.multiGet(["userID", "role"]).then(response => {
+
+            let userRolePath = "/driverProfile/" + response[0][1] ;
+            let itemsRef = db.database().ref(userRolePath);
+            itemsRef.on('value', (snapshot) => {
+                let data = snapshot.val();
+
+                //alert(JSON.stringify(data));
+                this.setState({
+                    f_name:data.f_name,
+                    l_name:data.l_name,
+                    u_name:data.u_name,
+                    email:data.email,
+                    city:data.city,
+                    address:data.address,
+                    mobile:data.mobile
+                });
+            });
+        })
+
+    }
 
     render() {
         return (
@@ -43,7 +70,7 @@ export default class profile extends Component<> {
                     <View style={styles.header}>
                         <View style={styles.headerContent}>
                             <Image style={styles.avatar}
-                                   source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+                                   source={{uri: 'https://bootdey.com/img/Content/avatar/avatar1.png'}}/>
 
                             <Text style={styles.name}>{this.state.f_name}</Text>
                             <Text style={styles.userInfo}>{this.state.email} </Text>
@@ -72,7 +99,7 @@ export default class profile extends Component<> {
 
                                 <View style={{flex: 1, flexDirection: 'row'}}>
                                     <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>{this.state.f_name} {this.state.l_name}</Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
+
                                 </View>
 
                             </Right>
@@ -86,8 +113,8 @@ export default class profile extends Component<> {
                             </Left>
                             <Right >
                                 <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>Nightfury</Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
+                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>{this.state.u_name}</Text>
+
                                 </View>
                             </Right>
                         </ListItem>
@@ -99,8 +126,8 @@ export default class profile extends Component<> {
                             </Left>
                             <Right >
                                 <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>rishan.ok@gmail.com</Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
+                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>{this.state.email}</Text>
+
                                 </View>
                             </Right>
                         </ListItem>
@@ -114,23 +141,12 @@ export default class profile extends Component<> {
 
                         <ListItem >
                             <Left>
-                                <Text>Address 1</Text>
+                                <Text>Address</Text>
                             </Left>
                             <Right >
                                 <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>No 95/A/8 </Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
-                                </View>
-                            </Right>
-                        </ListItem>
-                        <ListItem >
-                            <Left>
-                                <Text>Adress 2</Text>
-                            </Left>
-                            <Right >
-                                <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>New Road</Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
+                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>{this.state.address}</Text>
+
                                 </View>
                             </Right>
                         </ListItem>
@@ -140,8 +156,8 @@ export default class profile extends Component<> {
                             </Left>
                             <Right >
                                 <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>Wennappuwa</Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
+                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>{this.state.city}</Text>
+
                                 </View>
                             </Right>
                         </ListItem>
@@ -154,8 +170,8 @@ export default class profile extends Component<> {
                             </Left>
                             <Right >
                                 <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>077418259</Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
+                                    <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>{this.state.mobile}</Text>
+
                                 </View>
                             </Right>
                         </ListItem>
@@ -173,7 +189,7 @@ export default class profile extends Component<> {
                             <Right >
                                 <View style={{flex: 1, flexDirection: 'row'}}>
                                     <Text style={{width: 150 ,textAlign:'right',paddingRight:8}}>**********</Text>
-                                    <Icon name="arrow-forward" style={{width: 15}} />
+
                                 </View>
                             </Right>
                         </ListItem>
