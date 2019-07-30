@@ -6,9 +6,10 @@ const port = 3000;
 
 io.on("connection", socket => {
     console.log("a user connected :D");
-    socket.on("messages", msg => {
-        console.log(msg);
-        io.emit("messages", msg);
+    socket.on("reciveCoordinate", msg => {
+        var result = msg.map(Number);
+        console.log(result);
+        io.emit("dataFromServer", result);
     });
 });
 

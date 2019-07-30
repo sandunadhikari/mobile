@@ -324,69 +324,64 @@ class LoginScreen extends Component {
     render() {
         return (
             <Container>
-                <Header style={{backgroundColor: '#FEC301'}}>
-                    <Left/>
-                    <Body>
-                    <Title>Login</Title>
-                    </Body>
-                    <Right/>
-                </Header>
                 <Content style={styles.container}>
-                    <Thumbnail
-                        source={require('./imgs/schoolbus11.png')}
-                        resizeMode={'center'}
-                        style={styles.banner}
-                    />
-                    <Input
-                        type={this.state.form.email.type}
-                        value={this.state.form.email.value}
-                        onChangeText={value => this.UpdateInput("email", value)}
-                        keyboardType={'email-address'}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        style={this.state.form.email.valid === false ? styles.inputError : styles.input}
-                        placeholder="You@gmail.com"
-                    />
-                    {this.emailHasErrors()}
-                    {
-                        this.state.form.email.valid === null ? this.formHasErrors() : null
-                    }
+                    <View style={{marginTop:100}}>
+                        <Text style={{color:'#FEAB05',fontSize: 50,textAlign: 'center',marginBottom:15}}>Safe Ride</Text>
+                        <Thumbnail
+                            source={require('./imgs/schoolbus11.png')}
+                            resizeMode={'center'}
+                            style={styles.banner}
+                        />
+                        <Input
+                            type={this.state.form.email.type}
+                            value={this.state.form.email.value}
+                            onChangeText={value => this.UpdateInput("email", value)}
+                            keyboardType={'email-address'}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            style={this.state.form.email.valid === false ? styles.inputError : styles.input}
+                            placeholder="You@gmail.com"
+                        />
+                        {this.emailHasErrors()}
+                        {
+                            this.state.form.email.valid === null ? this.formHasErrors() : null
+                        }
 
-                    <Input
-                        type={this.state.form.password.type}
-                        value={this.state.form.password.value}
-                        onChangeText={value => this.UpdateInput("password", value)}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        style={this.state.form.password.valid === false ? styles.inputError : styles.input}
-                        secureTextEntry={true}
-                        placeholder="Password"
-                    />
-                    {this.passwordHasErrors()}
-                    {
-                        this.state.form.password.valid === null ? this.formHasErrors() : null
-                    }
-                    {this.confirmPassword()}
-                    {this.confirmpasswordHasErrors()}
-                    {this.userNotFoundErrors()}
+                        <Input
+                            type={this.state.form.password.type}
+                            value={this.state.form.password.value}
+                            onChangeText={value => this.UpdateInput("password", value)}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            style={this.state.form.password.valid === false ? styles.inputError : styles.input}
+                            secureTextEntry={true}
+                            placeholder="Password"
+                        />
+                        {this.passwordHasErrors()}
+                        {
+                            this.state.form.password.valid === null ? this.formHasErrors() : null
+                        }
+                        {this.confirmPassword()}
+                        {this.confirmpasswordHasErrors()}
+                        {this.userNotFoundErrors()}
 
-                    <Button
-                        onPress={this.SubmitUser.bind(this)}
-                        style={styles.loginButton}>
-                        <Text style={styles.loginButtonText}>
-                            {this.state.action}
-                        </Text>
-                    </Button>
+                        <Button
+                            onPress={this.SubmitUser.bind(this)}
+                            style={styles.loginButton}>
+                            <Text style={styles.loginButtonText}>
+                                {this.state.action}
+                            </Text>
+                        </Button>
 
-                    <Button transparent
-                            onPress={() => this.changeFormType()}
-                            style={styles.registerButton}>
-                        <Text style={styles.registerButtonText}>
-                            {this.state.actionMode}
-                        </Text>
-                    </Button>
-                    {this.Loading()}
-
+                        <Button transparent
+                                onPress={() => this.changeFormType()}
+                                style={styles.registerButton}>
+                            <Text style={styles.registerButtonText}>
+                                {this.state.actionMode}
+                            </Text>
+                        </Button>
+                        {this.Loading()}
+                    </View>
                 </Content>
             </Container>
 
@@ -399,11 +394,12 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         backgroundColor: '#F5FCFF',
+        justifyContent: 'center'
     },
     container: {
         flex: 1,
         padding: 30,
-        paddingTop: 80
+        backgroundColor: '#040202',
     },
     banner: {
         height: 90,
@@ -417,6 +413,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontSize: 18,
         borderWidth: 1,
+        color:'#FFF',
         borderColor: '#FED60C'
     },
     inputError: {
@@ -427,6 +424,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontSize: 18,
         borderWidth: 1,
+        color:'#FFF',
         borderColor: '#B30202'
     },
     loginButton: {
@@ -450,7 +448,7 @@ const styles = StyleSheet.create({
     },
     registerButtonText: {
         fontSize: 17,
-        color: '#0007',
+        color: '#FFF',
         alignSelf: 'center'
     },
     heading: {

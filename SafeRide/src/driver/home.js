@@ -40,7 +40,7 @@ export default class home extends Component {
 
     }
 
-    componentDidMount() {
+    componentWillMount(): void {
         itemsRef.on('value', (snapshot) => {
             let data = snapshot.val();
             // let items = [];
@@ -49,9 +49,12 @@ export default class home extends Component {
             //alert(JSON.stringify(list));
             this.setState({list});
         });
+    }
+
+    componentDidMount() {
 
         var that = this;
-        this.socket = io("http://192.168.1.36:4000");
+        this.socket = io("http://192.168.1.192:3000");
         //this.socket.emit("reciveCoordinate",[this.state.currentLongitude,this.state.currentLatitude]);
         //Checking for the permission just after component loaded
         if (Platform.OS === 'ios') {
@@ -69,7 +72,7 @@ export default class home extends Component {
                         //To Check, If Permission is granted
                         that.callLocation(that);
                     } else {
-                        //alert("Permission Denied");
+                        alert("Permission Denied");
                     }
                 } catch (err) {
                     alert("err", err);
@@ -116,9 +119,7 @@ export default class home extends Component {
                 });
 
                 this.socket.emit("reciveCoordinate", [this.state.currentLongitude, this.state.currentLatitude,this.state.userID]);
-            },
-            (error) => alert(error.message),
-            {enableHighAccuracy: true, distanceFilter: 0});
+            });
     }
 
     componentWillUnmount() {
@@ -193,9 +194,9 @@ export default class home extends Component {
                         </ListItem>
                     ))
                     }
-                    {/*<Text>{this.state.currentLongitude}</Text>*/}
-                    {/*<Text>{this.state.currentLatitude}</Text>*/}
-                    {/*<Text>{this.state.userID}</Text>*/}
+                    <Text>{this.state.currentLongitude}</Text>
+                    <Text>{this.state.currentLatitude}</Text>
+                    <Text>{this.state.userID}</Text>
                     <Button block style={{marginLeft:10,marginRight:10,backgroundColor:'#3971cc',marginBottom:20,marginTop:20}} onPress={this.handleSubmit}>
                         <Text style={{color:'white'}}>Save</Text>
                     </Button>

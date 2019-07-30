@@ -54,7 +54,7 @@ export default class home extends Component {
         }
 
         this.onReceivedMessage = this.onReceivedMessage.bind(this);
-        this.socket = io("http://192.168.1.36:4000");
+        this.socket = io("http://192.168.1.192:3000");
         this.socket.on('dataFromServer', this.onReceivedMessage);
 
         console.ignoredYellowBox = ['Remote debugger'];
@@ -77,9 +77,9 @@ export default class home extends Component {
     // }
 //
     onReceivedMessage=(data)=> {
-
+        let coord=[data[0],data[1]];
         let route=this.state.route;
-        route.features[0].geometry.coordinates=data;
+        route.features[0].geometry.coordinates=coord;
         this.setState({
             route
         })
